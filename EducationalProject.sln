@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31829.152
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EducationalProject", "EducationalProject\EducationalProject.csproj", "{BF276785-95A4-4E75-BDD3-458E99121962}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EP.Api", "EP.Api\EP.Api.csproj", "{BF276785-95A4-4E75-BDD3-458E99121962}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
