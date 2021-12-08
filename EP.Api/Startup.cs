@@ -1,11 +1,15 @@
+using EC.Infrastructure.Abstractions;
+using EC.Infrastructure.Data;
+using EC.Infrastructure.Data.Services;
+using EducationalProject.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
 
-namespace EP.Api
+namespace EducationalProject
 {
     public class Startup
     {
@@ -20,10 +24,11 @@ namespace EP.Api
         {
 
             services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "EP.Api", Version = "v1" });
-            });
+            services.AddSwaggerGenConfigure();
+            services.AddDbContext<EPContext>(opts => opts.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddControllersOptions();
+
+            services.AddScoped<IStudentDataService, StudentDataService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
