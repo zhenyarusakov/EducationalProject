@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using EC.Infrastructure.Abstractions;
 using EC.Infrastructure.DTO.Student;
@@ -31,20 +32,35 @@ namespace EC.Infrastructure.Data.Services
 
         public async Task SetGradeAsync(SetGradeRequest setGradeRequest)
         {
-            var grade = await _context.Grades.FirstOrDefaultAsync(x => 
-                x.StudentId == setGradeRequest.StudentId &&
-                x.SubjectName == setGradeRequest.SubjectName);
+            var subjectNames = setGradeRequest.ValuesBySubjects.Select(x => x.Key);
 
-            if (grade != null)
+            var grades = await _context.Grades
+                .Where(x =>
+                    x.StudentId == setGradeRequest.StudentId &&
+                    subjectNames.Contains(x.SubjectName))
+                .ToArrayAsync();
+
+            foreach (var (subjectName, value) in setGradeRequest.ValuesBySubjects)
             {
-                grade.Value = setGradeRequest.Value;
+                var grade = grades.FirstOrDefault(x => x.SubjectName == subjectName);
                 
-                return;
+                if (grade == null)
+                {
+                    grade = new Grade
+                    {
+                        StudentId = setGradeRequest.StudentId,
+                        SubjectName = subjectName,
+                        Value = value
+                    };
+
+                    _context.Grades.Add(grade);
+                }
+                else
+                {
+                    grade.Value = value;
+                }
             }
 
-            grade = setGradeRequest.Adapt<Grade>();
-
-            _context.Grades.Add(grade);
             await _context.SaveChangesAsync();
         }
 

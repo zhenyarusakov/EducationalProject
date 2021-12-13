@@ -1,9 +1,10 @@
-﻿namespace EC.Infrastructure.DTO.Subjects
+﻿using System.Collections.Generic;
+
+namespace EC.Infrastructure.DTO.Subjects
 {
     public record SetGradeRequest
     {
-        public string SubjectName { get; init; }
+        public Dictionary<string, byte> ValuesBySubjects { get; init; }
         public int StudentId { get; init; }
-        public int Value { get; init; }
     }
 }
