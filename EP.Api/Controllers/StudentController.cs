@@ -28,7 +28,7 @@ namespace EducationalProject.Controllers
         [HttpPatch]
         public async Task<IActionResult> SetGrade([FromBody] SetGradeRequest request)
         {
-            await _service.SetGradeAsync(request);
+            await _service.AddGradeAsync(request);
 
             return Ok();
         }

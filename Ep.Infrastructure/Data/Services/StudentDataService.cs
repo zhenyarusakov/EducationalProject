@@ -30,7 +30,7 @@ namespace EC.Infrastructure.Data.Services
             return student.Id;
         }
 
-        public async Task SetGradeAsync(SetGradeRequest setGradeRequest)
+        public async Task AddGradeAsync(SetGradeRequest setGradeRequest)
         {
             var subjectNames = setGradeRequest.ValuesBySubjects.Select(x => x.Key);
 

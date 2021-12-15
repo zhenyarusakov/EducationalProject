@@ -63,7 +63,7 @@ namespace Ep.Infrastructure.Tests
             };
             
             // Act
-            await studentDataService.SetGradeAsync(gradeRequest);
+            await studentDataService.AddGradeAsync(gradeRequest);
         
             // Assert
             Grade? actualGrade = await context.Grades.FirstOrDefaultAsync(x => x.Id == grade.Id);
@@ -120,8 +120,8 @@ namespace Ep.Infrastructure.Tests
                     }
                 }
             };
-            context.Students.Add(studentIvan);
             context.Students.Add(studentAlex);
+            context.Students.Add(studentIvan);
             await context.SaveChangesAsync();
             StudentDataService studentDataService = new (context);
             
@@ -130,9 +130,20 @@ namespace Ep.Infrastructure.Tests
 
             // Assert
             actualStudents.Should().NotBeNull();
-            actualStudents
-                .Select(x => x.Grades.Average(g => g.Value))
-                .Should().BeInAscendingOrder();
+            actualStudents.Should().SatisfyRespectively(
+                first =>
+                {
+                    first.Id.Should().Be(studentIvan.Id);
+                    first.Name.Should().Be(studentIvan.Name);
+                    first.Surname.Should().Be(studentIvan.Surname);
+                },
+                last =>
+                {
+                    last.Id.Should().Be(studentAlex.Id);
+                    last.Name.Should().Be(studentAlex.Name);
+                    last.Surname.Should().Be(studentAlex.Surname);
+                }
+            );
         }
 
         [Fact]
@@ -191,14 +202,8 @@ namespace Ep.Infrastructure.Tests
             StudentShortDto[] sortStudents = await studentDataService.GetExcellentStudentsAsync();
 
             // Assert
-            Student[] students = await context.Students.ToArrayAsync();
             sortStudents.Should().NotBeNull();
-            sortStudents.Should()
-                .BeEquivalentTo(students.Where(x => x.Grades.All(g => g.Value > 3)), 
-                opt=>opt.Excluding(x=>x.Id)
-                    .Excluding(x=>x.Name)
-                    .Excluding(x=>x.FullName)
-                    .Excluding(x=>x.Grades));
+            sortStudents.Should().ContainSingle(studentIvan.Surname);
         }
     }
 }

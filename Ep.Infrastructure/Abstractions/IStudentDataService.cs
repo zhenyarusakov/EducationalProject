@@ -7,7 +7,7 @@ namespace EC.Infrastructure.Abstractions
     public interface IStudentDataService
     {
         Task<int> CreateStudentAsync(CreateStudentRequest createStudentRequest);
-        Task SetGradeAsync(SetGradeRequest setGradeRequest);
+        Task AddGradeAsync(SetGradeRequest setGradeRequest);
         Task<StudentDto[]> GetStudentsByAvgGradeAscendingAsync();
         Task<StudentShortDto[]> GetExcellentStudentsAsync();
     }
