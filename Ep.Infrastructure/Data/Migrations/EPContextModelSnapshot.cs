@@ -3,7 +3,6 @@ using EC.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,10 +10,9 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EC.Infrastructure.Migrations
 {
     [DbContext(typeof(EPContext))]
-    [Migration("20211208184552_Initial")]
-    partial class Initial
+    partial class EPContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,9 +37,8 @@ namespace EC.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("Value")
-                        .HasMaxLength(5)
-                        .HasColumnType("int");
+                    b.Property<byte>("Value")
+                        .HasColumnType("tinyint");
 
                     b.HasKey("Id");
 

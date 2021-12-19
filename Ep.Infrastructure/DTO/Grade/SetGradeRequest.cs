@@ -2,8 +2,7 @@
 {
     public record SetGradeRequest
     {
-        public string SubjectName { get; init; }
+        public Dictionary<string, byte> ValuesBySubjects { get; init; }
         public int StudentId { get; init; }
-        public int Value { get; init; }
     }
 }
