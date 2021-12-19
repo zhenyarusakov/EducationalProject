@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace EC.Infrastructure.DTO.Subjects
+﻿namespace EC.Infrastructure.DTO.Subjects
 {
     public record SetGradeRequest
     {

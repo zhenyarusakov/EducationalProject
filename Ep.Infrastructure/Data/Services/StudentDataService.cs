@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using EC.Infrastructure.Abstractions;
+﻿using EC.Infrastructure.Abstractions;
 using EC.Infrastructure.DTO.Student;
 using EC.Infrastructure.DTO.Subjects;
 using EP.Core.Entities;
@@ -33,13 +30,13 @@ namespace EC.Infrastructure.Data.Services
         public async Task AddGradeAsync(SetGradeRequest setGradeRequest)
         {
             var subjectNames = setGradeRequest.ValuesBySubjects.Select(x => x.Key);
-
+        
             var grades = await _context.Grades
                 .Where(x =>
                     x.StudentId == setGradeRequest.StudentId &&
                     subjectNames.Contains(x.SubjectName))
                 .ToArrayAsync();
-
+        
             foreach (var (subjectName, value) in setGradeRequest.ValuesBySubjects)
             {
                 var grade = grades.FirstOrDefault(x => x.SubjectName == subjectName);
@@ -52,7 +49,7 @@ namespace EC.Infrastructure.Data.Services
                         SubjectName = subjectName,
                         Value = value
                     };
-
+        
                     _context.Grades.Add(grade);
                 }
                 else
@@ -60,7 +57,7 @@ namespace EC.Infrastructure.Data.Services
                     grade.Value = value;
                 }
             }
-
+        
             await _context.SaveChangesAsync();
         }
 

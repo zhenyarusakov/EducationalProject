@@ -1,4 +1,5 @@
-﻿using EP.Core.Entities;
+﻿using EC.Infrastructure.DTO.Subjects;
+using EP.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -11,10 +12,6 @@ namespace EC.Infrastructure.Data.EFConfigurations
             builder
                 .Property(x => x.SubjectName)
                 .HasMaxLength(100);
-
-            builder
-                .Property(x => x.Value)
-                .HasMaxLength(5);
         }
     }
 }

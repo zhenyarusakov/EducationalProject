@@ -1,5 +1,4 @@
 ﻿using Xunit;
-using System.Linq;
 using EP.Core.Entities;
 using FluentAssertions;
 using System.Threading.Tasks;
@@ -27,10 +26,10 @@ namespace Ep.Infrastructure.Tests
                 Surname = "Иванов",
                 GroupNumber = "ЭИБ11"
             };
-
+        
             // Act
             int studentId = await studentDataService.CreateStudentAsync(request);
-
+        
             // Assert
             Student? student = await context.Students.FirstOrDefaultAsync(x => x.Id == studentId);
             request.Should().NotBeNull();
@@ -38,7 +37,7 @@ namespace Ep.Infrastructure.Tests
             request.Surname.Should().Be(student.Surname);
             request.GroupNumber.Should().Be(student.GroupNumber);
         }
-
+        
         [Fact]
         public async Task Set_grade_success()
         {
@@ -72,7 +71,7 @@ namespace Ep.Infrastructure.Tests
                 .Should()
                 .Be(gradeRequest.ValuesBySubjects[grade.SubjectName]);
         }
-
+        
         [Fact]
         public async Task Get_students_by_avg_grade_ascending_success()
         {
@@ -127,7 +126,7 @@ namespace Ep.Infrastructure.Tests
             
             // Act
             StudentDto[] actualStudents = await studentDataService.GetStudentsByAvgGradeAscendingAsync();
-
+        
             // Assert
             actualStudents.Should().NotBeNull();
             actualStudents.Should().SatisfyRespectively(
@@ -145,7 +144,7 @@ namespace Ep.Infrastructure.Tests
                 }
             );
         }
-
+        
         [Fact]
         public async Task Get_excellent_students_success()
         {
@@ -200,10 +199,13 @@ namespace Ep.Infrastructure.Tests
             
             // Act
             StudentShortDto[] sortStudents = await studentDataService.GetExcellentStudentsAsync();
-
+        
             // Assert
             sortStudents.Should().NotBeNull();
-            sortStudents.Should().ContainSingle(studentIvan.Surname);
+            sortStudents.Should().Satisfy(
+                x => x.Surname == studentAlex.Surname && 
+                     x.GroupNumber == studentAlex.GroupNumber 
+            );
         }
     }
 }
